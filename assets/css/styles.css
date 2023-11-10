@@ -1,0 +1,34 @@
+.logo-image {
+    max-width: 700px;
+}
+
+.login-user {
+    font-size: 12rem;
+    color: #557D2F;
+}
+
+.input-login-custom {
+    border: 2px solid #557D2F;
+}
+
+.custom-shape {
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 35px;
+    padding: .75rem 3.5rem;
+}
+
+.btn-custom-login {
+    color: #fff;
+    background-color: #713D22;
+}
+
+.btn-custom-login:hover {
+    color: #fff;
+    background-color: #834a2c;
+}
+
+.color-avocado {
+    color: #557D2F;
+    font-size: 1.2rem;
+}
