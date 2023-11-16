@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/fontawesome.min.css?t=<?= md5(time()) ?>">
     <link rel="stylesheet" href="assets/css/styles.css?t=<?= md5(time()) ?>">
 
-    <title>Troca Verde <?= $view ? " - $view" : '' ?></title>
+    <title>Troca Verde <?= isset($view) ? " - $view" : '' ?></title>
 </head>
 <body>
     

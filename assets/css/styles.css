@@ -1,5 +1,9 @@
 .logo-image {
-    max-width: 700px;
+    max-width: 500px;
+}
+
+.logo-image img {
+    max-width: 100%;
 }
 
 .login-user {
@@ -7,23 +11,23 @@
     color: #557D2F;
 }
 
-.input-login-custom {
+.input-custom-avocado {
     border: 2px solid #557D2F;
 }
 
 .custom-shape {
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     border-radius: 35px;
     padding: .75rem 3.5rem;
 }
 
-.btn-custom-login {
+.btn-custom-brown {
     color: #fff;
     background-color: #713D22;
 }
 
-.btn-custom-login:hover {
+.btn-custom-brown:hover {
     color: #fff;
     background-color: #834a2c;
 }
@@ -31,4 +35,70 @@
 .color-avocado {
     color: #557D2F;
     font-size: 1.2rem;
+}
+
+
+.btn-add {
+    display: inline-block;
+    background-color: #478B16;
+    width: 30px;
+    height: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: relative;
+    font-size: 1.3rem;
+    transition: all .4s ease-in-out;
+}
+
+.btn-add:hover {
+    background-color: #BBBC46;
+}
+
+.btn-add svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+/* profile */
+.profile-image {
+    width: 300px;
+}
+
+.profile-image img {
+    width: 100%;
+}
+
+/* imagem planta */
+.imageWrapper {
+    border: 5px solid #4B8D1B;
+    color: #4B8D1B;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.imageWrapper:hover {
+    border-color: #BBBC46;
+    color: #BBBC46;
+}
+
+.imageWrapper img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.imageWrapper svg {
+    font-size: 6rem;
 }

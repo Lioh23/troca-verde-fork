@@ -46,7 +46,7 @@ $_SESSION['id'] = $usuario['id'];
 $_SESSION['nome'] = $usuario['nome'];
 $_SESSION['email'] = $usuario['email'];
 
-header('Location: ../index.php');
+header('Location: ../myProfile.php');
 
 
 // functions

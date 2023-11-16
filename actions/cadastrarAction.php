@@ -5,69 +5,103 @@ require_once '../start.php';
 $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 $nome             = trim($data['nome']) ?? '';
+$sexo             = trim($data['sexo']) ?? '';
+$logradouro       = trim($data['logradouro']) ?? '';
+$numero           = trim($data['numero']) ?? '';
+$complemento      = trim($data['complemento']) ?? null;
+$bairro           = trim($data['bairro']) ?? '';
 $cidade           = trim($data['cidade']) ?? '';
-$estado           = strtoupper(trim($data['estado'])) ?? '';
+$uf               = strtoupper(trim($data['uf'])) ?? '';
 $email            = trim($data['email']) ?? '';
 $senha            = trim($data['senha']) ?? '';
 $confirmacaoSenha = trim($data['confirmacao_senha']) ?? '';
 
-// validar os dados
 
-// nome
+// salvar os dados na sessão
 $_SESSION['cadastrar']['nome'] = $nome;
+$_SESSION['cadastrar']['sexo'] = $sexo;
+$_SESSION['cadastrar']['logradouro'] = $logradouro;
+$_SESSION['cadastrar']['numero'] = $numero;
+$_SESSION['cadastrar']['complemento'] = $complemento;
+$_SESSION['cadastrar']['bairro'] = $bairro;
+$_SESSION['cadastrar']['cidade'] = $cidade;
+$_SESSION['cadastrar']['uf'] = $uf;
+$_SESSION['cadastrar']['email'] = $email;
+
+
+// validar os dados
 if(strlen($nome) < 3) {
     $_SESSION['error']['nome'] = 'O nome precisa conter 3 ou mais caraceteres';
 }
 
-// cidade
-$_SESSION['cadastrar']['cidade'] = $cidade;
+if(strlen($sexo) < 1) {
+    $_SESSION['error']['sexo'] = 'Você precisa preencher este campo!';
+}
+
+if(strlen($logradouro) < 1) {
+    $_SESSION['error']['logradouro'] = 'Você precisa preencher este campo!';
+}
+
+if(strlen($numero) < 1) {
+    $_SESSION['error']['numero'] = '';
+}
+
+if(strlen($bairro) < 3) {
+    $_SESSION['error']['bairro'] = 'Você precisa informar o bairro';
+}
+
 if(strlen($cidade) < 3) {
     $_SESSION['error']['cidade'] = 'A cidade precisa conter 3 ou mais caraceteres';
 }
 
-// estado
-$_SESSION['cadastrar']['estado'] = $estado;
-if(strlen($estado) != 2) {
-    $_SESSION['error']['estado'] = 'A Unidade Federativa precisa conter apenas 2 caracteres';
+if(strlen($uf) != 2) {
+    $_SESSION['error']['uf'] = 'A Unidade Federativa precisa conter apenas 2 caracteres';
 }
 
-// email
-$_SESSION['cadastrar']['email'] = $email;
 if(strlen($email) < 8 || !strpos($email, '@')) {
     $_SESSION['error']['email'] = 'E-Mail inválido';
 }
 
-// senha
 if(!$senha) {
     $_SESSION['error']['senha'] = 'O campo "senha" não pode estar vazio';
 }
 
-// senhas iguais
 if($senha !== $confirmacaoSenha) {
     $_SESSION['error']['confirmacao_senha'] = 'As senhas precisam ser iguais';
 }
 
 if(isset($_SESSION['error'])) {
-    header('Location: ../cadastrar.php');
+    header('Location: ../cadastrar.php'); exit;
 }
+
 
 // criar o hash da senha
 $passwordHash = password_hash($senha, PASSWORD_DEFAULT);
 
+
 // salvar no banco de dados
-$sqlSave = "INSERT INTO usuarios (nome, email, password_hash, cidade, estado, created_at, updated_at)
-            VALUES (:nome, :email, :password_hash, :cidade, :estado, now(), now())";
+$sqlSave = "INSERT INTO usuarios (
+        nome, sexo, logradouro, numero, complemento, bairro,  cidade,  uf,  email,  password_hash,  created_at,  updated_at
+    ) VALUES (
+        :nome, :sexo, :logradouro, :numero, :complemento, :bairro,  :cidade,  :uf,  :email,  :password_hash, now(), now()
+    )";
 
-$connection = getConnection();
-$stmt = $connection->prepare($sqlSave);
-$stmt->bindParam(':nome', $nome);
-$stmt->bindParam(':email', $email);
-$stmt->bindParam(':password_hash', $passwordHash);
-$stmt->bindParam(':cidade', $cidade);
-$stmt->bindParam(':estado', $estado);
+$bindings = [
+    ':nome'          => $nome,
+    ':sexo'          => $sexo,
+    ':logradouro'    => $logradouro,
+    ':numero'        => $numero,
+    ':complemento'   => $complemento,
+    ':bairro'        => $bairro,
+    ':cidade'        => $cidade,
+    ':uf'            => $uf,
+    ':email'         => $email,
+    ':password_hash' => $passwordHash
+];
 
-if($stmt->execute()) {
+if(execute(getConnection(), $sqlSave, $bindings)) {
     if(isset($_SESSION['cadastrar'])) unset($_SESSION['cadastrar']);
+
     setFlashMessage('Usuário cadastrado com sucesso!', 'success');
     header('Location: ../login.php');
 } else {

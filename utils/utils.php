@@ -1,19 +1,25 @@
 <?php
 
-function getConnection() {
-    try {
-        $dsn = 'mysql:dbname=troca_verde;host=127.0.0.1';
-        $user = 'root';
-        $password = '';
-        $connection = new PDO($dsn, $user, $password);
+require_once('databaseUtils.php');
 
-        return $connection;
-    } catch (PDOException $e) { 
-        echo 'Não foi possível se conectar com a base de dados - ' . $e->getMessage(); exit;
-    }
-}
+require_once('usuarioUtils.php');
+
+require_once('plantaUtils.php');
 
 function setFlashMessage($text, $color) {
     $_SESSION['flashMessage']['text'] = $text;
     $_SESSION['flashMessage']['color'] = $color;
+}
+
+
+function startDotEnvFile() {
+
+    if(!file_exists('.env')) {
+        return false;
+    }
+    $contents = explode(PHP_EOL, file_get_contents('.env'));
+
+    foreach($contents as $content) {        
+        putenv(trim($content));
+    }
 }
