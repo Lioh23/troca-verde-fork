@@ -47,12 +47,12 @@
       <?php if(count($plantas)): ?>
         <div class="row">
           <?php foreach($plantas as $planta): ?>
-            <div class="col-2 mb-5">
-                <div class="text-center">
+            <div class="col-sm-2 col-md-3 mb-5">
+                <a class="card-plant-clickable text-center" href="editarPlanta.php?id=<?= $planta['id'] ?>">
 
-                  <div class="col-12 imageWrapper m-auto mb-1" style="width: 100px; height: 100px; border-width: 2px">
+                  <div class="col-12 card_image m-auto mb-1">
                     <?php if($planta['foto']): ?>
-                      <img class="image" src="<?= $appUrl . $planta['foto'] ?>">
+                      <img src="<?= $appUrl . $planta['foto'] ?>">
                     <?php else: ?>
                       <i id="svg_planta" class="fa-solid fa-seedling"></i>
                     <?php endif; ?>
@@ -62,7 +62,7 @@
                   <h6 class="card-subtitle mb-1 text-muted"><?= $planta['tipo'] ?></h6>
                   <!-- <a href="#" class="card-link">Card link</a>
                   <a href="#" class="card-link">Another link</a> -->
-                </div>
+                </a>
             </div>
           <?php endforeach ?>
         </div>
@@ -78,19 +78,7 @@
         <a href="editInteresses.php" class="btn-add" style="position: relative; top: 5px"><i class="fa-solid fa-plus"></i></a>
       </h2>
 
-      <?php if($lenFavoritos = count($favoritos)): ?>
-        <p>
-          <?php foreach($favoritos as $index => $favorito): ?>
-            <?= $index == $lenFavoritos - 1 // checa se é o último último 
-                ? "{$favorito['nome']}." 
-                : ($index == $lenFavoritos - 2 // checa se é o penúltimo
-                  ? "{$favorito['nome']} e " 
-                  : "{$favorito['nome']}, " ) ?>
-          <?php endforeach ?>
-        </p>
-      <?php else: ?>
-      <p>Ainda não há interesses adicionados.</p>
-      <?php endif ?>
+      <p><?= formatTextFavoritos($favoritos) ?></p>
     </div>
   </div>  
 

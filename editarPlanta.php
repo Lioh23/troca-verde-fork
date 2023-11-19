@@ -3,6 +3,9 @@
 <?php $view = 'Editar Perfil' ?>
 <?php $tipos = getTiposPlanta() ?>
 <?php $especies = getEspeciesPlanta() ?>
+<?php $planta = getDadosPlanta($_GET['id']) ?>
+
+
 
 <?php include_once('template/base/header.php') ?>
 
@@ -19,17 +22,22 @@
     <div class="col-9">
       <div class="row">
         <div class="col-12">
-          <form action="actions/novaPlantaAction.php" method="POST" enctype="multipart/form-data">
+          <form action="actions/editarPlantaPlantaAction.php" method="POST" enctype="multipart/form-data">
 
-            <div class="row mb-4 justify-content-center">
+            <div class="row mb-4 justify-content-center position-relative ">
               <!-- image -->
               <div style="display: none;">
                 <input type="file" id="file_image" name="file_image" accept="image/png, image/jpeg, image/jpg, image/webp" />
               </div>
 
               <div class="col-12 imageWrapper m-auto" onclick="file_image.click()">
-                <img id="img_planta" class="image d-none" src="">
-                <i id="svg_planta" class="fa-solid fa-seedling"></i>
+                <?php if($planta['foto']): ?>
+                  <img id="img_planta" class="image" src="<?= $appUrl . $planta['foto'] ?>">
+                  <i id="svg_planta" class="fa-solid fa-seedling d-none"></i>
+                  <?php else: ?>
+                    <img id="img_planta d-none" class="image" src="">
+                    <i id="svg_planta" class="fa-solid fa-seedling"></i>
+                <?php endif; ?>
               </div>
             </div>
 
@@ -38,41 +46,44 @@
 
               <div class="col-9 row">
 
+              <div class="col-12 d-flex justify-content-between mb-4">
+                <span><?= $planta['status'] ?></span>
+                <span>publicado em: <?= $planta['dt_publicacao'] ?></span>
+              </div>
+
                 <div class="col-12 mb-5">
                   <div class="form-floating">
-                    <select id="tipo_id" name="tipo_id" 
-                            class="form-select input-custom-avocado <?= isset($_SESSION['error']['tipo_id']) ? 'is-invalid' : '' ?>">
+                    <select id="tipo_id" name="tipo_id" disabled
+                            class="form-select input-custom-avocado">
                       <option value="" hidden disable selected>Selecione</option>
                       <?php foreach($tipos as $tipo): ?>
                         <option 
-                          <?= isset($_SESSION['nova_planta']['tipo_id']) && $_SESSION['nova_planta']['tipo_id'] == $tipo['id'] ? 'selected' : ''  ?> 
+                          <?= isset($planta['tipo_id']) == $tipo['id'] ? 'selected' : ''  ?> 
                               value="<?= $tipo['id'] ?>"><?= $tipo['nome'] ?></option>
                       <?php endforeach ?>
                     </select>
                     <label for="tipo_id">Tipo de Planta</label>
-                    <?= isset($_SESSION['error']['tipo_id']) ? '<div class="invalid-feedback">' . $_SESSION['error']['tipo_id'] . '</div>' : '' ?>
                   </div>
                 </div>
 
                 <div class="col-12 mb-5">
                   <div class="form-floating">
-                    <select id="especie_id" name="especie_id" 
-                            class="form-select input-custom-avocado <?= isset($_SESSION['error']['especie_id']) ? 'is-invalid' : '' ?>">
+                    <select id="especie_id" name="especie_id" disabled
+                            class="form-select input-custom-avocado">
                       <option value="" hidden disable selected>Selecione</option>
                       <?php foreach($especies as $especie): ?>
-                        <option <?= isset($_SESSION['nova_planta']['especie_id']) && $_SESSION['nova_planta']['especie_id'] == $especie['id'] ? 'selected' : ''  ?> 
+                        <option <?= isset($planta['especie_id']) == $especie['id'] ? 'selected' : ''  ?> 
                                 value="<?= $especie['id'] ?>"><?= $especie['nome'] ?></option>
                       <?php endforeach ?>
                     </select>
                     <label for="especie_id">Espécie de Planta</label>
-                    <?= isset($_SESSION['error']['especie_id']) ? '<div class="invalid-feedback">' . $_SESSION['error']['especie_id'] . '</div>' : '' ?>
                   </div>
                 </div>
 
                 <div class="col-12 mb-5">
                   <div class="form-floating">
                     <textarea id="descricao" name="descricao" style="height: 8rem"
-                              class="form-control input-custom-avocado"><?= $_SESSION['nova_planta']['descricao'] ?? '' ?></textarea>
+                              class="form-control input-custom-avocado"><?= $planta['descricao'] ?? '' ?></textarea>
                     <label for="descricao">Dê uma descrição para sua planta</label>
                   </div>
                 </div>

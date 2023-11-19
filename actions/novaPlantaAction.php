@@ -29,7 +29,7 @@ $file = $_FILES['file_image'];
 
 $ruleUploadFile = [
   'maxSizeMegaBytes' => 12,
-  'allowedTypes'     => ['image/png', 'image/jpeg', 'image/jpg']
+  'allowedTypes'     => ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
 ];
 
 // salvar meu arquivo 
@@ -74,8 +74,8 @@ if(!$file['error']) {
 $conn = getConnection();
 
 $sql = "INSERT INTO plantas 
-    (usuario_id, tipo_id, especie_id, planta_status_id, foto, descricao, created_at, updated_at) 
-  VALUES(:usuario_id, :tipo_id, :especie_id, 1, :foto, :descricao, now(), now())";
+    (usuario_id, tipo_id, especie_id, foto, descricao, created_at, updated_at) 
+  VALUES(:usuario_id, :tipo_id, :especie_id, :foto, :descricao, now(), now())";
 
 $bindings = [
   ':usuario_id' => $_SESSION['id'],

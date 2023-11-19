@@ -10,14 +10,12 @@ function getDadosUsuario() {
 function getUsuarioPlantas() {
   return fetchall("SELECT 
       p.id,
-      ps.nome status,
       e.nome especie,
       t.nome tipo,
       p.descricao,
       p.foto
   from plantas p
       inner join usuarios u on u.id = p.usuario_id
-      inner join planta_status ps on ps.id = p.planta_status_id 
       inner join especies e on e.id = p.especie_id 
       inner join tipos t on t.id = p.tipo_id
   where

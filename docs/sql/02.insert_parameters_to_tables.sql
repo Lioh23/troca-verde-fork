@@ -22,11 +22,6 @@ insert into tipos (nome) values ('Planta de Terra');
 insert into tipos (nome) values ('Planta para vaso');
 
 
--- populando a tabela status de planta
-insert into planta_status (nome) values ('Disponível');
-insert into planta_status (nome) values ('Indisponível');
-
-
 -- populando solicitacao status
 insert into solicitacao_status (nome) values('solicitado');
 insert into solicitacao_status (nome) values('')

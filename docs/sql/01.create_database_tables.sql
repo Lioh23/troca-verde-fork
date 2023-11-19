@@ -67,19 +67,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `troca_verde`.`planta_status`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `troca_verde`.`planta_status` ;
-
-CREATE TABLE IF NOT EXISTS `troca_verde`.`planta_status` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `troca_verde`.`plantas`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `troca_verde`.`plantas` ;
@@ -89,16 +76,19 @@ CREATE TABLE IF NOT EXISTS `troca_verde`.`plantas` (
   `usuario_id` INT NOT NULL,
   `tipo_id` INT NOT NULL,
   `especie_id` INT NOT NULL,
-  `planta_status_id` INT NOT NULL,
-  `descricao` TEXT,
   `foto` VARCHAR(255) NULL,
+  `descricao` TEXT,
+  `donated_to` INT,
+  `donated_at` TIMESTAMP NULL,
+  `disabled_at` TIMESTAMP NULL,
   `created_at` TIMESTAMP NULL,
   `updated_at` TIMESTAMP NULL,
+
   PRIMARY KEY (`id`),
   INDEX `fk_plantas_usuarios_idx` (`usuario_id` ASC),
   INDEX `fk_plantas_tipos1_idx` (`tipo_id` ASC),
   INDEX `fk_plantas_especies1_idx` (`especie_id` ASC),
-  INDEX `fk_plantas_planta_status1_idx` (`planta_status_id` ASC),
+  INDEX `fk_plantas_donated_to_idx` (`donated_to` ASC),
   CONSTRAINT `fk_plantas_usuarios`
     FOREIGN KEY (`usuario_id`)
     REFERENCES `troca_verde`.`usuarios` (`id`)
@@ -114,9 +104,9 @@ CREATE TABLE IF NOT EXISTS `troca_verde`.`plantas` (
     REFERENCES `troca_verde`.`especies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_plantas_planta_status1`
-    FOREIGN KEY (`planta_status_id`)
-    REFERENCES `troca_verde`.`planta_status` (`id`)
+  CONSTRAINT `fk_plantas_donated_to`
+    FOREIGN KEY (`donated_to`)
+    REFERENCES `troca_verde`.`usuarios` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -6,6 +6,8 @@ require_once('usuarioUtils.php');
 
 require_once('plantaUtils.php');
 
+require_once('formatUtils.php');
+
 function setFlashMessage($text, $color) {
     $_SESSION['flashMessage']['text'] = $text;
     $_SESSION['flashMessage']['color'] = $color;
