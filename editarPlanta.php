@@ -1,11 +1,11 @@
 <?php require_once('start.php') ?>
 
-<?php $view = 'Editar Perfil' ?>
-<?php $tipos = getTiposPlanta() ?>
-<?php $especies = getEspeciesPlanta() ?>
-<?php $planta = getDadosPlanta($_GET['id']) ?>
-
-
+<?php 
+  $view = 'Editar Planta';
+  $tipos = getTiposPlanta();
+  $especies = getEspeciesPlanta();
+  $planta = getDadosPlanta($_GET['id']);
+?>
 
 <?php include_once('template/base/header.php') ?>
 
@@ -16,27 +16,28 @@
 
   <?php include_once('template/base/flashMessage.php') ?>
 
-  <h1 class="text-center mb-4">Adicione uma planta para troca</h1>
-
   <div class="row justify-content-center">
     <div class="col-9">
       <div class="row">
         <div class="col-12">
-          <form action="actions/editarPlantaPlantaAction.php" method="POST" enctype="multipart/form-data">
+          <form action="actions/editarPlantaAction.php" method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" name="id" value="<?= $planta['id'] ?>">
 
             <div class="row mb-4 justify-content-center position-relative ">
               <!-- image -->
               <div style="display: none;">
-                <input type="file" id="file_image" name="file_image" accept="image/png, image/jpeg, image/jpg, image/webp" />
+                <input type="file" id="file_image" name="file_image"
+                       accept="image/png, image/jpeg, image/jpg, image/webp" />
               </div>
 
-              <div class="col-12 imageWrapper m-auto" onclick="file_image.click()">
+              <div class="col-12 imageWrapper hoverable clickable m-auto" onclick="file_image.click()">
                 <?php if($planta['foto']): ?>
                   <img id="img_planta" class="image" src="<?= $appUrl . $planta['foto'] ?>">
                   <i id="svg_planta" class="fa-solid fa-seedling d-none"></i>
-                  <?php else: ?>
-                    <img id="img_planta d-none" class="image" src="">
-                    <i id="svg_planta" class="fa-solid fa-seedling"></i>
+                <?php else: ?>
+                  <img id="img_planta" class="image d-none" src="">
+                  <i id="svg_planta" class="fa-solid fa-seedling"></i>
                 <?php endif; ?>
               </div>
             </div>
@@ -46,20 +47,28 @@
 
               <div class="col-9 row">
 
-              <div class="col-12 d-flex justify-content-between mb-4">
-                <span><?= $planta['status'] ?></span>
-                <span>publicado em: <?= $planta['dt_publicacao'] ?></span>
+              <div class="col-12 d-flex justify-content-between mb-4 align-items-center">
+                <div class="col-6">
+                  <input  type="checkbox" class="btn-check" name="status" id="status"
+                          <?= $planta['status'] ? 'checked' : '' ?> 
+                          value="<?= $planta['status'] ?>" autocomplete="off">
+                  <label  class="fw-semibold custom-shape btn btn-outline-success mb-3" 
+                          for="status" style="padding: 10px 20px; font-size: 1rem">
+                      <i class="fa-solid fa-power-off"></i> 
+                      <span id="status_text"><?= $planta['status_text'] ?></span>
+                  </label>
+                </div>
+
+                <span>Publicado em: <?= $planta['dt_publicacao'] ?></span>
               </div>
 
                 <div class="col-12 mb-5">
                   <div class="form-floating">
-                    <select id="tipo_id" name="tipo_id" disabled
-                            class="form-select input-custom-avocado">
+                    <select id="tipo_id" name="tipo_id" disabled class="form-select input-custom-avocado">
                       <option value="" hidden disable selected>Selecione</option>
                       <?php foreach($tipos as $tipo): ?>
-                        <option 
-                          <?= isset($planta['tipo_id']) == $tipo['id'] ? 'selected' : ''  ?> 
-                              value="<?= $tipo['id'] ?>"><?= $tipo['nome'] ?></option>
+                        <option <?= isset($planta['tipo_id']) == $tipo['id'] ? 'selected' : ''  ?> 
+                            value="<?= $tipo['id'] ?>"><?= $tipo['nome'] ?></option>
                       <?php endforeach ?>
                     </select>
                     <label for="tipo_id">Tipo de Planta</label>
@@ -128,9 +137,24 @@
     const reader = new FileReader()
 
     reader.onload = function(e) {
-      image.setAttribute('src', e.target.result);
+      image.setAttribute('src', e.target.result)
     };
 
-    reader.readAsDataURL(this.files[0]);
+    reader.readAsDataURL(this.files[0])
+  })
+
+  document.getElementById('status').addEventListener('change', function() {
+    const label = this.nextElementSibling
+    const statusText = document.getElementById('status_text')
+
+    if(!this.checked) {
+      label.classList.remove('btn-outline-success')
+      label.classList.add('btn-danger')
+      statusText.innerHTML = 'Indisponível'
+    } else {
+      label.classList.add('btn-outline-success')
+      label.classList.remove('btn-danger')
+      statusText.innerHTML = 'Disponível'
+    }
   })
 </script>

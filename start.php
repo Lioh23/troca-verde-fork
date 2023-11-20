@@ -9,4 +9,6 @@ include_once 'actions/checkAuthAction.php';
 
 startDotEnvFile();
 
+global $appUrl;
+
 $appUrl = getenv('APP_URL') ?? 'http://localhost/troca-verde';

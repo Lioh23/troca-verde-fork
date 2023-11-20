@@ -32,7 +32,7 @@
           </div>
 
           <div class="col-12">
-            <button type="submit" class="btn btn-primary custom-shape me-5" style="font-size: 1.1rem;">Salvar</button>
+            <button type="submit" class="btn btn-custom-brown custom-shape me-5" style="font-size: 1.1rem;">Salvar</button>
           </div>
         </form>
       </div>

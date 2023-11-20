@@ -9,12 +9,6 @@
 
 <?php include_once('template/base/header.php') ?>
 
-<style>
-  #svg_planta {
-    font-size: 3rem;
-  }
-</style>
-
 <main class="container">
   <div class="d-flex justify-content-center mb-5">
       <img class="logo-image my-3" src="assets/images/logo.png" alt="Logo do site">
@@ -48,9 +42,9 @@
         <div class="row">
           <?php foreach($plantas as $planta): ?>
             <div class="col-sm-2 col-md-3 mb-5">
-                <a class="card-plant-clickable text-center" href="editarPlanta.php?id=<?= $planta['id'] ?>">
-
-                  <div class="col-12 card_image m-auto mb-1">
+                <?php $link = $planta['status'] == 1 ? "editarPlanta.php?id={$planta['id']}" : "visualizarPlanta.php?id={$planta['id']}" ?>
+                <a class="card-plant-clickable text-center" href="<?= $link ?>">
+                  <div class="col-12 imageWrapper m-auto mb-2" style="width: 170px; height: 170px;">
                     <?php if($planta['foto']): ?>
                       <img src="<?= $appUrl . $planta['foto'] ?>">
                     <?php else: ?>
@@ -58,10 +52,11 @@
                     <?php endif; ?>
                   </div>
 
-                  <h5 class="card-title mb-1"><?= $planta['especie'] ?></h5>
-                  <h6 class="card-subtitle mb-1 text-muted"><?= $planta['tipo'] ?></h6>
-                  <!-- <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a> -->
+                  <h5 class="card-title mb-0"><?= $planta['especie'] ?></h5>
+                  <h6 class="card-subtitle mb-0 text-muted"><?= $planta['tipo'] ?></h6>
+                  <?php if($planta['status'] == 0): ?>
+                    <small class="text-danger"><?= $planta['status_text'] ?></small>
+                  <?php endif; ?>
                 </a>
             </div>
           <?php endforeach ?>
