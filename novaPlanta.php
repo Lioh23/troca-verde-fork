@@ -27,7 +27,7 @@
                 <input type="file" id="file_image" name="file_image" accept="image/png, image/jpeg, image/jpg, image/webp" />
               </div>
 
-              <div class="col-12 imageWrapper m-auto" onclick="file_image.click()">
+              <div class="col-12 imageWrapper clickable hoverable m-auto" onclick="file_image.click()">
                 <img id="img_planta" class="image d-none" src="">
                 <i id="svg_planta" class="fa-solid fa-seedling"></i>
               </div>

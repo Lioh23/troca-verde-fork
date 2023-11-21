@@ -76,10 +76,11 @@
 
           <?php if($planta['status'] == 1): ?>
           <div class="d-flex justify-content-center">
-            <form action="solicitarPlantaAction.php" method="POST">
+            <form action="actions/solicitarPlantaAction.php" method="POST" id="form_solicitacao">
               <input type="hidden" name="solicitante_id" value="<?= $_SESSION['id'] ?>" >
-              <input type="hidden" name="planta_id" value="<?= $_SESSION['id'] ?>" >
-              <button type="submit" class="btn btn-custom-brown custom-shape">Solicitar</button>
+              <input type="hidden" name="planta_id" value="<?= $_GET['id'] ?>" >
+              <input type="hidden" name="mensagem">
+              <button type="button" class="btn btn-lg btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#messageModal">Solicitar</button>
             </form>
           </div>
           <?php endif; ?>
@@ -88,8 +89,55 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <form class="modal-content" id="form_message">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Deixe uma mensagem para <?= $planta['proprietario'] ?></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-floating">
+            <textarea class="form-control" placeholder="Deixe sua mensagem aqui" 
+                      name="modal_message" id="modal_message" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Mensagem</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-custom-brown rounded-pill">Abrir Solicitação</button>
+        </div>
+      </form>
+    </div>
+  </div>
   
   <?php include_once('template/system/menu.php') ?>
 </main>
 
 <?php include_once('template/base/footer.php') ?>
+
+<script>
+  document.getElementById('form_message').addEventListener('submit', function (event) {
+      event.preventDefault()
+
+      // textarea modal
+      const { modal_message } = this
+
+      if(!modal_message.value.trim()){
+        modal_message.classList.add('is-invalid')
+        return
+      }
+
+      modal_message.classList.remove('is-invalid')
+
+      const formSolicitacao = document.getElementById('form_solicitacao')
+      const { mensagem } = formSolicitacao;
+
+      // guarda a informção do textarea do modal dentro do input hidden 
+      mensagem.value = modal_message.value;
+
+      // submeter o formulário
+      formSolicitacao.submit()
+    }
+  )
+</script>

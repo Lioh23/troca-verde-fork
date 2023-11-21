@@ -42,5 +42,7 @@ function fetch(string $sql, array $bindings = []) {
 function execute(PDO $conn, $sql, $bindings) {
   $stmt = $conn->prepare($sql);
   
-  return $stmt->execute($bindings);
+  $executed = $stmt->execute($bindings);
+
+  return $executed ? $conn->lastInsertId() : false;
 }

@@ -58,6 +58,9 @@ function getPlantasDisponiveis( $reqEspecie = '', $page = 1, $perPage = 2) {
   where
     p.usuario_id <> :usuario_id
     and e.nome like :especie
+    and not exists (
+      select 1 from solicitacoes sol where sol.planta_id = p.id
+    )
   having
     status = 1
   order by

@@ -15,6 +15,8 @@ insert into especies (nome) values ('Palmeira');
 insert into especies (nome) values ('Árvore da Felicidade');
 insert into especies (nome) values ('Begônia');
 insert into especies (nome) values ('Pata de Elefante');
+insert into especies (nome) values ('Salgueiro');
+insert into especies (nome) values ('Mangueira');
 
 
 -- populando a tabela de tipos de plantas

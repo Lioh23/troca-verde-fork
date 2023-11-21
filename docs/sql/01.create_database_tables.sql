@@ -146,36 +146,29 @@ DROP TABLE IF EXISTS `troca_verde`.`solicitacoes` ;
 CREATE TABLE IF NOT EXISTS `troca_verde`.`solicitacoes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `planta_id` INT NOT NULL,
-  `usuario_id` INT NOT NULL,
-  `solicitacao_status_id` INT NOT NULL,
-  `solicitacao_tipo_id` INT NOT NULL,
+  `solicitante_id` INT NOT NULL,
+  `solicitante_planta_id` INT NOT NULL,
   `finished_at` DATETIME NULL,
   `canceled_at` DATETIME NULL,
   `created_at` TIMESTAMP NULL,
   `updated_at` TIMESTAMP NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_planta_solicitacoes_plantas1_idx` (`planta_id` ASC),
-  INDEX `fk_planta_solicitacoes_usuarios1_idx` (`usuario_id` ASC),
-  INDEX `fk_solicitacoes_solicitacoes_status1_idx` (`solicitacao_status_id` ASC),
-  INDEX `fk_solicitacoes_solicitacao_tipos1_idx` (`solicitacao_tipo_id` ASC),
+  INDEX `fk_planta_solicitacoes_solicitante1_idx` (`solicitante_id` ASC),
+  INDEX `fk_solicitacoes_solicitante_planta1_idx` (`solicitante_planta_id` ASC),
   CONSTRAINT `fk_planta_solicitacoes_plantas1`
     FOREIGN KEY (`planta_id`)
     REFERENCES `troca_verde`.`plantas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_planta_solicitacoes_usuarios1`
-    FOREIGN KEY (`usuario_id`)
+  CONSTRAINT `fk_planta_solicitacoes_solicitantes1`
+    FOREIGN KEY (`solicitante_id`)
     REFERENCES `troca_verde`.`usuarios` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_solicitacoes_solicitacoes_status1`
-    FOREIGN KEY (`solicitacao_status_id`)
-    REFERENCES `troca_verde`.`solicitacao_status` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_solicitacoes_solicitacao_tipos1`
-    FOREIGN KEY (`solicitacao_tipo_id`)
-    REFERENCES `troca_verde`.`solicitacao_tipos` (`id`)
+  CONSTRAINT `fk_solicitacoes_solicitante_planta1`
+    FOREIGN KEY (`solicitante_planta_id`)
+    REFERENCES `troca_verde`.`plantas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

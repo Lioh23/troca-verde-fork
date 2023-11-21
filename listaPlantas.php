@@ -4,7 +4,7 @@
   $view = 'Lista de Plantas Disponíveis';
   $page = $_GET['page'] ?? 1;
   $especie = isset($_GET['especie']) ? trim($_GET['especie']) : '';
-  $plantasDisponiveis = getPlantasDisponiveis($especie, $page, 12);
+  $plantasDisponiveis = getPlantasDisponiveis($especie, $page, 8);
 ?>
 
 <?php include_once('template/base/header.php') ?>
