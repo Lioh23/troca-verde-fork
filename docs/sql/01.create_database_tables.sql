@@ -113,13 +113,13 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `troca_verde`.`solicitacao_status`
+-- Table `troca_verde`.`solicitacao_cancelamento_motivos`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `troca_verde`.`solicitacao_status` ;
+DROP TABLE IF EXISTS `troca_verde`.`solicitacao_cancelamento_motivos` ;
 
-CREATE TABLE IF NOT EXISTS `troca_verde`.`solicitacao_status` (
+CREATE TABLE IF NOT EXISTS `troca_verde`.`solicitacao_cancelamento_motivos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `nome_UNIQUE` (`nome` ASC))
 ENGINE = InnoDB;
@@ -148,14 +148,19 @@ CREATE TABLE IF NOT EXISTS `troca_verde`.`solicitacoes` (
   `planta_id` INT NOT NULL,
   `solicitante_id` INT NOT NULL,
   `solicitante_planta_id` INT NOT NULL,
-  `finished_at` DATETIME NULL,
+  `propriet_accepted_at` DATETIME NULL,
+  `solic_accepted_at` DATETIME NULL,
   `canceled_at` DATETIME NULL,
+  `canceled_by` INTEGER NULL,
+  `cancelamento_motivo_id` INT NULL,
   `created_at` TIMESTAMP NULL,
   `updated_at` TIMESTAMP NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_planta_solicitacoes_plantas1_idx` (`planta_id` ASC),
   INDEX `fk_planta_solicitacoes_solicitante1_idx` (`solicitante_id` ASC),
   INDEX `fk_solicitacoes_solicitante_planta1_idx` (`solicitante_planta_id` ASC),
+  INDEX `fk_solicitacoes_canceled_by_idx` (`canceled_by` ASC),
+  INDEX `fk_solicitacoes_cancelamento_motivo_idx` (`cancelamento_motivo_id` ASC),
   CONSTRAINT `fk_planta_solicitacoes_plantas1`
     FOREIGN KEY (`planta_id`)
     REFERENCES `troca_verde`.`plantas` (`id`)
@@ -169,6 +174,16 @@ CREATE TABLE IF NOT EXISTS `troca_verde`.`solicitacoes` (
   CONSTRAINT `fk_solicitacoes_solicitante_planta1`
     FOREIGN KEY (`solicitante_planta_id`)
     REFERENCES `troca_verde`.`plantas` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION),
+  CONSTRAINT `fk_solicitacoes_canceled_by1`
+    FOREIGN KEY (`canceled_by`)
+    REFERENCES `troca_verde`.`usuarios` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION),
+  CONSTRAINT `fk_solicitacoes_cancelamento_motivo1`
+    FOREIGN KEY (`cancelamento_motivo_id`)
+    REFERENCES `troca_verde`.`solicitacao_cancelamento_motivos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

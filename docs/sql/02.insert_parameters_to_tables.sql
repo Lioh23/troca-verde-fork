@@ -24,6 +24,7 @@ insert into tipos (nome) values ('Planta de Terra');
 insert into tipos (nome) values ('Planta para vaso');
 
 
--- populando solicitacao status
-insert into solicitacao_status (nome) values('solicitado');
-insert into solicitacao_status (nome) values('')
+-- populando motivos de cancelamento
+insert into solicitacao_cancelamento_motivos (nome) values ('Cancelado pelo solicitante');
+insert into solicitacao_cancelamento_motivos (nome) values ('Cancelado pelo dono da planta');
+insert into solicitacao_cancelamento_motivos (nome) values ('Uma planta desta solicitação está indisponível por troca com outro usuário');

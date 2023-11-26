@@ -49,7 +49,7 @@ function getPlantasDisponiveis( $reqEspecie = '', $page = 1, $perPage = 2) {
     p.foto,
     concat(u.cidade, ' - ', u.uf) localizacao,
     case when donated_at is not null or disabled_at is not null then 0 else 1 end status,
-    (select count(*) from favoritos fav where fav.especie_id = e.id) is_favorite,
+    (select count(*) from favoritos fav where fav.especie_id = e.id and fav.usuario_id = {$_SESSION['id']}) is_favorite,
     p.created_at dt_publicacao
   from
     plantas p
@@ -59,7 +59,7 @@ function getPlantasDisponiveis( $reqEspecie = '', $page = 1, $perPage = 2) {
     p.usuario_id <> :usuario_id
     and e.nome like :especie
     and not exists (
-      select 1 from solicitacoes sol where sol.planta_id = p.id
+      select 1 from solicitacoes sol where sol.planta_id = p.id and sol.solicitante_id = :usuario_id and canceled_at is null
     )
   having
     status = 1
@@ -77,6 +77,9 @@ function getPlantasDisponiveis( $reqEspecie = '', $page = 1, $perPage = 2) {
     plantas p
     inner join especies e on e.id = p.especie_id
     inner join usuarios u on u.id = p.usuario_id
+    and not exists (
+      select 1 from solicitacoes sol where sol.planta_id = p.id and sol.solicitante_id = :usuario_id and canceled_at is null
+    )
   where
     p.usuario_id <> :usuario_id
     and p.donated_at is null
@@ -96,4 +99,23 @@ function getPlantasDisponiveis( $reqEspecie = '', $page = 1, $perPage = 2) {
     'next'  => $page < $pages ? $appUrl . '/listaPlantas.php?page=' . ($page + 1) . '&especie=' . $reqEspecie : '',
     'prev'  => $page > 1      ? $appUrl . '/listaPlantas.php?page=' . ($page - 1) . '&especie=' . $reqEspecie : ''
   ];
+}
+
+function getPlantasDisponiveisUsuario($usuario_id) {
+  return fetchall("SELECT 
+    p.id,
+    e.nome especie,
+    t.nome tipo,
+    p.descricao,
+    p.foto,
+    (select count(*) from favoritos fav where fav.especie_id = e.id and fav.usuario_id = {$_SESSION['id']}) is_favorite
+  from plantas p
+    inner join usuarios u on u.id = p.usuario_id
+    inner join especies e on e.id = p.especie_id 
+    inner join tipos t on t.id = p.tipo_id
+  where
+    p.donated_at is null
+    and p.disabled_at is null
+    and u.id = :id
+  order by is_favorite desc, id desc", [':id' => $usuario_id]);
 }

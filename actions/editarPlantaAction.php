@@ -65,20 +65,16 @@ if(!$file['error']) {
   $filePath = '/storage/plantas/' . $_SESSION['id'] . '/' . $fileName;
 }
 
-
 // inserir a planta no banco de dados
 $conn = getConnection();
 
-$sql = "INSERT INTO plantas 
-    (usuario_id, tipo_id, especie_id, foto, descricao, created_at, updated_at) 
-  VALUES(:usuario_id, :tipo_id, :especie_id, :foto, :descricao, now(), now())";
+$disabledAt = $data['disabled_at'] ? 'now()' : 'null';
 
-$sql = "UPDATE plantas SET descricao = :descricao, disabled_at = :disabled_at, updated_at = now() $updateFoto WHERE id = :id";
+$sql = "UPDATE plantas SET descricao = :descricao, disabled_at = $disabledAt, updated_at = now() $updateFoto WHERE id = :id";
 
 $bindings = [
-  'descricao'   => $data['descricao'],
-  'disabled_at' => $data['disabled_at'],
-  'id'          => $data['id'],
+  'descricao' => $data['descricao'],
+  'id'        => $data['id'],
 ];
 if($updateFoto) $bindings['foto'] = $filePath ?? null;
 
@@ -90,5 +86,5 @@ if($executed) {
   header('Location: ../myProfile.php');
 } else {
   setFlashMessage('Erro ao editar a planta! Por favor, tente novamente mais tarde.', 'danger');
-  header('Location: ../editarPlanta.php');
+  header('Location: ../editarPlanta.php?id=' . $data['id']);
 }

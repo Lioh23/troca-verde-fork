@@ -99,7 +99,7 @@
 
                 <div class="row justify-content-center mb-5">
                   <div class="col-6">
-                    <input class="btn-custom-brown custom-shape" type="submit" value="salvar" style="width: 100%;">
+                    <input class="btn-custom-brown custom-shape" type="submit" value="salvar" style="width: 100%; border: none">
                   </div>
                 </div>
 

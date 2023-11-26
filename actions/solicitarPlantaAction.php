@@ -14,7 +14,7 @@ try {
   VALUES
     (:planta_id, :solicitante_id, now(), now())";
 
-  $solicitacaoId = execute($conn, $sqlInsertSolicitacao, [
+  $solicitacaoId = executeGetId($conn, $sqlInsertSolicitacao, [
     'planta_id'      => $data['planta_id'],
     'solicitante_id' => $data['solicitante_id']
   ]); 
@@ -41,7 +41,7 @@ try {
   $conn->commit();
 
   setFlashMessage('Solicitação criada com sucesso!', 'success');
-  header('Location: ../visualizarSolicitacao.php?id=' . $solicitacao['id']);
+  header('Location: ../visualizarSolicitacao.php?id=' . $solicitacaoId);
   exit;
   
 } catch (Exception $e) {
