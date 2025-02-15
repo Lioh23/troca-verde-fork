@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-3">
         <div class="profile-image">
-          <img src="assets/images/<?= $usuario['sexo'] == 'M' ? 'rosto_homem' : 'rosto_mulher' ?>.png" alt="">
+          <img src="/assets/images/<?= $usuario['sexo'] == 'M' ? 'rosto_homem' : 'rosto_mulher' ?>.png" alt="">
         </div>
       </div>
       <div class="col-9 d-flex flex-column justify-content-center">

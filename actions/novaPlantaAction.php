@@ -53,7 +53,7 @@ if(!$file['error']) {
   $fileDir = __DIR__ . '/../storage/plantas/'. $_SESSION['id'] . '/';
 
   if(!is_dir($fileDir)) {
-    mkdir($fileDir, '0777', true);
+    mkdir($fileDir, 0777, true);
   }
   $fileName = uniqid() . '.' .strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
